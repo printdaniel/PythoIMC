@@ -2,18 +2,20 @@ from tkinter import*
 import tkinter.messagebox
 
 
-class RebecaTemplate:
+class ImcCalc:
     def __init__(self,root):
         self.root=root
         self.root.title("Calculadora IMC")
-        self.root.geometry("800x750+0+0")
+        self.root.geometry("300x300+0+0")
         self.root.config(bg="#060505")
 
-        self.Altura = StringVar()
-        self.Peso = StringVar()
+        self.Altura = DoubleVar()
+        self.Peso = DoubleVar()
+        self.Res = DoubleVar()
+        self.res = 0
 
         encabezado = Label(root, text="Registro de Altura"
-                           , width=50, font=('arial', 
+                           , width=20, font=('arial', 
                             16, 'bold'), bg='#FFC300')
         encabezado.grid(row=0, column=0, columnspan=2)
 
@@ -23,8 +25,8 @@ class RebecaTemplate:
         frame1 = LabelFrame(self.root,text='Controles',bg="#FFA262",padx=20, pady=20)
         frame1.grid(row=2,column=0,columnspan=2,pady=10,padx=10,sticky='W')
 
-        frame3 = LabelFrame(self.root, text='Su imc es...',bg='#FFA262')
-        frame3.grid(row=1, column=2,columnspan=2,pady=10,padx=10)
+        self.frame3 = LabelFrame(self.root, text='Su imc es...',bg='#FFA262')
+        self.frame3.grid(row=1, column=1,pady=10,padx=10)
 
         # LABELS
         label_alt = Label(frame, text='Altura:',font=('arial', 12, 'bold'),
@@ -44,22 +46,26 @@ class RebecaTemplate:
         e_alt.grid(row=1, column=1)
         e_pes.grid(row=2, column=1)
 
+        #INFO LABEL
+        
+        info_label = Label(self.frame3, text=str(self.res))
+        info_label.grid(row=0,column=0)
+
         #Botones
 
-        btn_imc = Button(frame1,text="IMC", width=12)
+        btn_imc = Button(frame1,text="IMC", width=12,command= self.imc_funcion)
         btn_imc.grid(row=0,column=0)
 
         btn_salir = Button(frame1,text="Salir",width=10,command=root.destroy)
         btn_salir.grid(row=0,column=1)
 
-        #INFO LABEL
+    def imc_funcion(self):
+        res = self.Peso.get()/(self.Altura.get()*self.Altura.get())
 
-        info_label = Label(frame3, text="Resultado")
-        info_label.grid(row=0,column=0)
-
-
+        self.info_label = Label(self.frame3, text=str(round(res, 2)))
+        self.info_label.grid(row=0,column=0)
 
 if __name__=='__main__':
     root=Tk()
-    applicaton=RebecaTemplate(root)
+    applicaton=ImcCalc(root)
     root.mainloop()
